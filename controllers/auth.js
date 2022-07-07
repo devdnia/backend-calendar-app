@@ -5,7 +5,7 @@ const { generarJWT } = require('../helpers/jwt');
 
 const crearUsuario = async (req, res = response) => {
 
-    const { email, password, name } = req.body;
+    const { email, password, password2, name } = req.body;
 
     try {
 
@@ -20,12 +20,21 @@ const crearUsuario = async (req, res = response) => {
 
         usuario = new Usuario(req.body);
 
+        // Verificar nombre
         if (name.length <= 1) {
             return res.status(400).json({
                 ok: false,
                 msg: 'El nombre debe tener al menos 2 caracteres'
             });
             
+        }
+
+        // Verificar contraseñas
+        if (password !== password2) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Las contraseñas no coinciden'
+            });
         }
 
         // Encriptar contraseña
