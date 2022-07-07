@@ -5,7 +5,7 @@ const { generarJWT } = require('../helpers/jwt');
 
 const crearUsuario = async (req, res = response) => {
 
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
     try {
 
@@ -19,6 +19,14 @@ const crearUsuario = async (req, res = response) => {
         }
 
         usuario = new Usuario(req.body);
+
+        if (name.length <= 1) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'El nombre debe tener al menos 2 caracteres'
+            });
+            
+        }
 
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync();
